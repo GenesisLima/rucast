@@ -1,0 +1,46 @@
+
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> -->
+<!-- <html> -->
+<!-- <head> -->
+<!--     <meta charset="utf-8"> -->
+<!--     <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+<!--     <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+     
+     
+<!--     </head> -->
+     <h2>Cadastrar Novo Episodio</h2>
+    <div class="alert alert-danger alert-dismissible fade show"  ng-show="episodeForm.product.$required" topic="Something went wrong! You must set a product for this episode!">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <strong>Danger!</strong> This alert box could indicate a dangerous or potentially negative action.
+   
+  </div>
+    <form name="episodeForm" action="/upload/file" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+  <label for="sel1">Selecione o Programa:</label>
+  <select ng-model="show"  name="showName" id="showName"  class="form-control" ng-required="true"> 
+           <option value=""  disabled selected><span ng-style="color:LightGray;">Selecione um Programa</span></option>  
+           <option ng-repeat="show in shows" value="{{show.name}}">{{show.name}}</option>
+  </select>
+</div>
+  <div class="form-group">
+    <label for="topic">Titulo:</label>
+    <input type="topic" name="topic" class="form-control" id="topic" ng-required="true">
+  </div>
+ <div class="form-group">
+  <label for="synopsis">Descricao:</label>
+  <textarea name="synopsis" class="form-control" rows="5" id="synopsis"></textarea>
+</div>
+
+<div ng-repeat="category in categories"  class="form-check">
+  <label  class="form-check-label"  >   
+    <input type="checkbox" class="form-check-input" name="categories" value="{{category.name}}">{{category.name}}</input>
+  </label>
+</div>
+<br/>
+ <div class="form-group">
+  <label for="comment">Inserir Audio:</label>
+  <input id="my-file-selector" name="file" type="file" class="form-control-file border" >  
+</div>
+  <button type="submit" class="btn btn-primary" ng-disabled="episodeForm.$invalid">Salvar</button>
+</form>
+<!-- </html> -->

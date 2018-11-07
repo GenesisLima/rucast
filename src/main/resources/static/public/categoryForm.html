@@ -1,0 +1,26 @@
+
+
+     <h2>Cadastrar Nova Categoria</h2>   
+<form  novalidate method="post" id="categoryForm" ng-submit="send()">
+  <div id="divAddCategory" class="form-group" >
+<!--   <p>{{category.name}}</p> -->
+    <label for="name">Nome:</label>   
+    <input type="text" name="name" class="form-control" id="categoryName" ng-model="category.name" />
+  </div>
+ <div class="form-group">
+  <label for="description">Descricao:</label>
+  <textarea class="form-control" rows="5" name="description" id="description" ng-model="category.description" ></textarea> 
+</div>
+ <button type="submit" class="btn btn-primary" ng-disabled="categoryForm.$invalid">Salvar</button>
+</form>
+<script>
+//  $("#divAddCategory").ready(function(){
+// 	 //angular.element(document.querySelector('#divAddCategory')).click();
+// 	    //angular.element('RUCastController').scope().clearCategory();
+// 	   // window.customRefresh();
+// 	   console.log("CATEGORIA "+category);		
+// 	       //window.customRefresh();
+	   	   
+// 	}); 
+  </script>
+

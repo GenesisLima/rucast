@@ -1,0 +1,39 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    </head>
+     <h2>Categorias</h2>   
+<!--     <form action="/category" method="get"> -->
+     <form class="form-inline">
+        <div class="form-group">
+            <label for="search">Pesquisar: </label>
+            <input name="search" type="text" ng-model="search" class="form-control" placeholder="Programa">
+        </div>
+    </form>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th ng-click="sort('id')">#</th>
+                <span class="glyphicon sort-icon" ng-show="sortKey=='id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+          <th ng-click="sort('name')">Nome</th>
+          <th ng-click="sort('description')">Descrição</th>         
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="show in shows |orderBy:sortKey:reverse |filter:search">
+                                    <td>{{show.id}}</td>
+                                    <td>{{show.name}}</td>
+                                    <td>{{show.description}}</td>
+                                 
+        </tr>
+      </tbody>
+    </table>
+  </div>
+ 
+</html>
