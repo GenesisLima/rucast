@@ -1,0 +1,38 @@
+
+
+
+     <h2>Episodios</h2>   
+<!--     <form action="/category" method="get"> -->
+     <form class="form-inline">
+        <div class="form-group">
+            <label for="search">Pesquisar: </label>
+            <input name="search" type="text" ng-model="search" class="form-control" placeholder="Episódio">
+        </div>
+    </form>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th ng-click="sort('id')">#</th>
+                <span class="glyphicon sort-icon" ng-show="sortKey=='id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+          <th ng-click="sort('name')">Nome</th>
+          <th ng-click="sort('description')">Descrição</th>         
+          <th>Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="episode in episodes | orderBy:sortKey:reverse |filter:search">
+                                    <td>{{episode.id}}</td>
+                                    <td>{{episode.name}}</td>
+                                    <td>{{episode.description}}</td>
+                                     <td> <a id="editCategory"  href="/category/{{category.id}}"  ><span style="cursor:pointer">Editar</span></a></td>
+                                      
+<!--                                       <td> <a id="editCategoryLnk" ><span style="cursor:pointer">Editar</span></a></td> -->
+                                      
+                                    
+                                 
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

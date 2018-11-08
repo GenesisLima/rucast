@@ -57,6 +57,13 @@ public class Show implements Serializable {
 		this.description = description;
 	}
 	
+	public Show(Long id, String name) {
+		super();
+		this.id= id;
+		this.name = name;
+		
+	}
+	
 	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinTable(name="ru_product_category")
 	@JsonIgnore

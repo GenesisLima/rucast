@@ -36,6 +36,24 @@ angular.module("rucast", ['ngRoute','ngResource','rucastServices'])
 	        controller: 'ProductController'
 	    });
 	 
+	 //Routes for Episodes
+	 
+	 $routeProvider.when('/episode', {
+	        templateUrl: 'public/episodeForm.html',
+	        controller: 'EpisodeController'
+	    });
+	 
+	 
+	 $routeProvider.when('/episodes',{
+		 templateUrl: 'public/listEpisodes.html',
+		 controller: 'EpisodeController'
+	 });
+	 
+	 $routeProvider.when('/episode/:id',{
+		 templateUrl: 'public/episodeForm.html',
+		 controller: 'EpisodeController'
+	 });
+	 
 	 
 	 $routeProvider.otherwise({redirectTo: '/'});
 });

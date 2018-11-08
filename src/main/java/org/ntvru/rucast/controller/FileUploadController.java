@@ -72,15 +72,16 @@ public class FileUploadController {
    
 
     @RequestMapping(value = "/file", method = RequestMethod.POST)
+  //  @RequestMapping(value = "/episode", method = RequestMethod.POST)
     @Secured(value={"ADMIN"})
-    public ModelAndView uploadFileHandler(@RequestParam("file") MultipartFile file, @RequestParam("showName") String showName, @RequestParam("categories") String[] categories, ModelMap model, RedirectAttributes redirectAttributes, FileDocument fileDocument, Episode episode) throws UnknownHostException {
+    public String uploadFileHandler(@RequestParam("file") MultipartFile file, @RequestParam("showName") String showName, @RequestParam("categories") String[] categories, ModelMap model, RedirectAttributes redirectAttributes, FileDocument fileDocument, Episode episode) throws UnknownHostException {
     	
     	   System.out.println("Show Name "+showName);
    System.out.println("Show "+episode.toString()+"Tema: "+episode.getTopic());
    System.out.println("Show "+episode.toString()+"Sinopse: "+episode.getSynopsis());
    System.out.println("Show "+episode.toString()+"Data: "+episode.getSaveDate());
 
-   ModelAndView modelAndView = new ModelAndView("redirect:/");
+  // ModelAndView modelAndView = new ModelAndView("redirect:/");
    
     
    
@@ -187,7 +188,7 @@ public class FileUploadController {
         
         
 
-        return modelAndView;
+        return "redirect:/";
     }
 
     

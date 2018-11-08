@@ -14,34 +14,32 @@
     <strong>Danger!</strong> This alert box could indicate a dangerous or potentially negative action.
    
   </div>
-  <!-- action="/upload/file" -->
-      <form name="episodeForm" action="/upload/file" method="post" enctype="multipart/form-data"> 
+    <form name="episodeForm" action="/upload/file" method="post" enctype="multipart/form-data">
             <div class="form-group">
   <label for="sel1">Selecione o Programa:</label>
-  <select ng-model="show.name" ng-controller="ProductComboController"  name="showName" id="showName"  class="form-control" ng-required="true"> 
+  <select ng-model="show"  name="showName" id="showName"  class="form-control" ng-required="true"> 
            <option value=""  disabled selected><span ng-style="color:LightGray;">Selecione um Programa</span></option>  
-           <option ng-repeat="product in productsCombo" value="{{product.name}}">{{product.name}}</option>
+           <option ng-repeat="show in shows" value="{{show.name}}">{{show.name}}</option>
   </select>
 </div>
   <div class="form-group">
     <label for="topic">Titulo:</label>
-    <input type="topic" name="topic" ng-model="show.topic" class="form-control" id="topic" ng-required="true">
+    <input type="topic" name="topic" class="form-control" id="topic" ng-required="true">
   </div>
  <div class="form-group">
   <label for="synopsis">Descricao:</label>
-  <textarea name="synopsis" ng-model="show.synopsis" class="form-control" rows="5" id="synopsis"></textarea>
+  <textarea name="synopsis" class="form-control" rows="5" id="synopsis"></textarea>
 </div>
 
-<div ng-repeat="category in categoryCheckBox" class="form-check">
-<!--   <label  class="form-check-label"  >   -->
-<!--   value="{{category.name}}"  -->
-    <input type="checkbox" class="form-check-input" name="categories" ng-model="show.category" >{{category.name}}</input>
-<!--   </label> -->
+<div ng-repeat="category in categories"  class="form-check">
+  <label  class="form-check-label"  >   
+    <input type="checkbox" class="form-check-input" name="categories" value="{{category.name}}">{{category.name}}</input>
+  </label>
 </div>
 <br/>
  <div class="form-group">
   <label for="comment">Inserir Audio:</label>
-  <input id="my-file-selector" name="file" type="file" ng-model="show.file" class="form-control-file border" >  
+  <input id="my-file-selector" name="file" type="file" class="form-control-file border" >  
 </div>
   <button type="submit" class="btn btn-primary" ng-disabled="episodeForm.$invalid">Salvar</button>
 </form>

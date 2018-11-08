@@ -30,8 +30,13 @@
           <script src="/public/js/app.js" type="text/javascript"></script>
           <script src="/public/js/controllers/CategoryController.js" type="text/javascript"></script>
           <script src="/public/js/controllers/ProductController.js" type="text/javascript"></script>
+          <script src="/public/js/controllers/ProductComboController.js" type="text/javascript"></script>      
+          <script src="/public/js/controllers/CategoryUtilityController.js" type="text/javascript"></script>              
+          <script src="/public/js/controllers/EpisodeController.js" type="text/javascript"></script>
           <script src="/public/js/services/CategoryService.js" type="text/javascript"></script>
-          <script src="/public/js/services/ProductService.js" type="text/javascript"></script>          
+          <script src="/public/js/services/EpisodeService.js" type="text/javascript"></script>
+          <script src="/public/js/services/ProductService.js" type="text/javascript"></script>         
+           
           
           
 <!--     <script th:href="@{/webjars/angularjs/2.0.0-alpha.22/angular.min.js}"></script> -->
@@ -64,11 +69,11 @@
                             <a id="addProgram" href="product"><span style="cursor:pointer">Novo Produto</span></a>
                         </li>
                         <li>
-                            <a id="addEpisode" ng-click="page = '/public/episodeForm.html'"><span style="cursor:pointer">Novo Episodio</span></a>
+                            <a id="addEpisode" href="episode"><span style="cursor:pointer">Novo Episodio</span></a>
                         </li>
                         
                         <li>
-                            <a id="angular" ng-click="page = '/public/angular.html'"><span style="cursor:pointer">Angular</span></a>
+                            <a id="angular"  href="#"><span style="cursor:pointer">Angular</span></a>
                         </li>
                     </ul>
                 </li>
@@ -82,7 +87,7 @@
                              <a id="listShow" href="products"><span style="cursor:pointer">Programas</span></a>
                         </li>
                         <li>
-                            <a id="listEpisode">Episodios</a>
+                            <a id="listEpisode" href="episodes">Episodios</a>
                         </li>
                         
                         <li>

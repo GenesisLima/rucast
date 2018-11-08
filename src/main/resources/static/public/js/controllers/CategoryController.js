@@ -1,7 +1,7 @@
 /**
  * Category Controller
  */
-angular.module('rucast').controller('CategoryController', function($scope, $routeParams, resourceCategory){
+angular.module('rucast').controller('CategoryController', function($scope, $routeParams, $http, resourceCategory){
 	
 	$scope.category = {}
 	$scope.mensagem = ''
@@ -32,6 +32,17 @@ angular.module('rucast').controller('CategoryController', function($scope, $rout
 				  console.log(error);
 			  });
 		     }
+	
+	
+$scope.categoryCheckBox = {}
+	
+	$http.get('/category/api/categories').
+	success(function(categories){
+		$scope.categoryCheckBox = categories;
+		
+	}).error(function(erro){
+		console.log(erro)
+	})
 	
 });
 

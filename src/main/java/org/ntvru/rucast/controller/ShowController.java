@@ -1,8 +1,10 @@
 package org.ntvru.rucast.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.ntvru.rucast.model.Show;
+import org.ntvru.rucast.model.dto.adapter.ShowDTOAdapter;
 import org.ntvru.rucast.service.ShowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,9 @@ public class ShowController {
 
 	@Autowired	
 	ShowService service;
+	
+	@Autowired
+	ShowDTOAdapter showAdapter;
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public String addProduct(ModelAndView modelAndView, @RequestBody Show show, RedirectAttributes redirectAttributes) {
@@ -41,6 +46,12 @@ public class ShowController {
 	public @ResponseBody Show getShowById(@PathVariable Long id){		
 		
 		return service.findById(id).get();
+	}
+	
+	
+	@RequestMapping(value="/names",method=RequestMethod.GET)
+	public @ResponseBody List<Show> getShowNames(){
+		return showAdapter.getShowNamesOnly();
 	}
 	
 }
