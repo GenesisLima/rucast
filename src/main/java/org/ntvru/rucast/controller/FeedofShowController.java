@@ -53,7 +53,7 @@ public class FeedofShowController {
 	@RequestMapping(value="/rssfeed", method=RequestMethod.GET)
 	public ModelAndView getFeedRss() throws UnknownHostException{		  
 		
-		List<Episode> items = episodeService.findAll();		
+		List<Episode> items = episodeService.findAll();	
 		
 		ModelAndView modelAndView = new ModelAndView(new AudiocastRSSViewer(), "feedEpisodes",items);
 	

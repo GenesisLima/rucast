@@ -54,7 +54,7 @@ public class Category implements Serializable {
 	
 //	@ManyToMany(fetch=FetchType.LAZY)		 
 //	private List<Show> show;
-	
+//	
 	
 	
 }

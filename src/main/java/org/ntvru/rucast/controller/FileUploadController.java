@@ -145,19 +145,26 @@ public class FileUploadController {
 
                 
                
-                fileDocument.setFilePath(path);
-                fileDocument.setFileName(name);
-                fileDocument.setFileSize(size);
-                fileDocument.setFileType(type);
-                fileDocument.setUri(uri);                
+                             
                 episode.setShow(showService.findShowByName(showName).get());
+                //System.out.println("EPISODE SHOW "+episode.getShow() );
                 for(int i=0; i < categories.length;i++) {
                episode.getShow().getCategories().add(categoryService.findCategoryByName(categories[i]).get());
                 System.out.println("CATEGORY BY NAME "+categoryService.findCategoryByName(categories[i]).get());   
                 }
-                fileDocument.setEpisode(episode);                
                 episodeService.save(episode);
-                fileService.save(fileDocument);                
+                
+                fileDocument.setEpisode(episode);             
+                
+                fileDocument.setFilePath(path);
+                fileDocument.setFileName(name);
+                fileDocument.setFileSize(size);
+                fileDocument.setFileType(type);
+                fileDocument.setUri(uri);   
+                fileDocument.setEpisode(episode);
+                
+                fileService.save(fileDocument);
+               
                 System.out.println("FILE DOCUMENT "+fileDocument);
 
              
@@ -167,8 +174,8 @@ public class FileUploadController {
                 System.out.println(newFileMessage);
                                         
                 
-                episode.setSaveDate(LocalDate.now());
-               // fileDocument.setEpisode(episode);
+              
+               
                
                 System.out.println("EPISODE "+episode);
                

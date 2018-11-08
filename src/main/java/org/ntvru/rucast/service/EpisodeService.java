@@ -38,7 +38,7 @@ public class EpisodeService {
 	//public void save(String showName, String showTopic,String showSynopsis){}
 	
 	public List<Episode> findAll() throws UnknownHostException {
-            List<Episode> episodes = new ArrayList<>();
+            List<Episode> episodes = new ArrayList<Episode>();            
             episodeRepository.findAll().forEach(episodes::add);      
         return episodes;
 

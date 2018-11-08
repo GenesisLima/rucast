@@ -36,7 +36,7 @@ public class FileDocument implements Serializable {
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.IDENTITY)
 	 @Column(name="FILE_DOCUMENT_ID")	    
-   	private Long id;
+   	 private Long id;
 	
 
   
