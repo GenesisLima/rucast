@@ -77,7 +77,11 @@ public class FileService {
       
     }
     
-   
+   public FileDocument findByName(String name) {
+	   
+	   return fileDocumentRepository.findByFileName(name);
+	   
+   }
     
     
     

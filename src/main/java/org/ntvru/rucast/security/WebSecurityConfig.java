@@ -32,9 +32,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 		.authorizeRequests()	
-		.antMatchers("/rssfeed/**","/webjars/**", "/registration","/downloads/files/**").permitAll()
+		.antMatchers("/rssfeed.xml","/webjars/**", "/registration","/downloads/files/**").permitAll()		
 		.antMatchers("/").hasAnyRole("EDITOR")
-		.antMatchers("/index","/upload/**").hasAnyRole("ADMIN")
+		.antMatchers("/index","/upload/**", "/h2/**").hasAnyRole("ADMIN")
 		.anyRequest()
 		.authenticated()
 		.and()
@@ -57,7 +57,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.inMemoryAuthentication()
 		.withUser("genesis").password("$2a$10$7CbNjdc1SIrrHKDO5VywVu69xUK3gYZvvOTpmOUhlAGe9IUxbJZs2").roles("EDITOR","ADMIN")
 		.and()
-		.withUser("lima").password("$2a$10$l4UtQTONoBqh2RErK0y6HOxeBzIj/5qghixv1x1me7jsJnoVoR57O").roles("EDITOR");
+		.withUser("lima").password("$2a$10$l4UtQTONoBqh2RErK0y6HOxeBzIj/5qghixv1x1me7jsJnoVoR57O").roles("EDITOR")
+		.and()
+		.withUser("admin").password("admin").roles("ADMIN");
 		builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 		
 	}

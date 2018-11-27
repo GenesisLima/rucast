@@ -45,50 +45,90 @@ protected final Logger logger = LoggerFactory.getLogger(this.getClass());
        
        
 
-    @RequestMapping(value="/files/{id}", method = RequestMethod.GET)
-    public void getEpisodeFile(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        logger.debug("Download of item file {}", id);
-       Optional<FileDocument> fileDocument= fileService.findById(id);
+//    @RequestMapping(value="/files/{id}", method = RequestMethod.GET)
+//    public void getEpisodeFile(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+//        logger.debug("Download of item file {}", id);
+//       Optional<FileDocument> fileDocument= fileService.findById(id);
+//       
+//        
+//      //  if (show.isDownloaded()) {
+//            logger.debug("R�cup�ration en local de l'item {} au chemin {}", id, fileDocument.get().getUri());
+//            
+//            
+//            
+//            // Creating the directory to store file
+//            FileSystem fs = FileSystems.getDefault();
+//            
+//            //ApplicationContextAware contextProvider = new ApplicationContextProvider();
+//            Path dir = null;
+//            
+//            path = fileService.createPath();
+//            
+//            
+//            if(OSValidator.isWindows()) {
+//            	 dir = fs.getPath("C:", "audiocast", path);	
+//            	
+//            }else if(OSValidator.isUnix()){
+//            	dir = fs.getPath("/", "opt","audiocast", path);	
+//            	
+//            }
+//            
+//            System.out.println("SHOW ON ITEM CONTROLLER :"+dir+getSlashByOS()+fileDocument.get().getFileName());
+//            
+//            MultipartFileSender.fromURIString(dir+getSlashByOS()+fileDocument.get().getFileName())
+//                    .with(request)
+//                    .with(response)
+//                .serveResource();
+//
+//       // } else {
+//         //   response.sendRedirect(show.getUrl());
+//       // }
+//
+//    }
+  
+   @RequestMapping(value="/files/{name}", method = RequestMethod.GET)
+   public void getEpisodeByFileName(@PathVariable String name, HttpServletRequest request, HttpServletResponse response) throws Exception {
+       logger.debug("Download of item file {}", name);
+      FileDocument fileDocument= fileService.findByName(name);
+      
        
-        
-      //  if (show.isDownloaded()) {
-            logger.debug("R�cup�ration en local de l'item {} au chemin {}", id, fileDocument.get().getUri());
-            
-            
-            
-            // Creating the directory to store file
-            FileSystem fs = FileSystems.getDefault();
-            
-            //ApplicationContextAware contextProvider = new ApplicationContextProvider();
-            Path dir = null;
-            
-            path = fileService.createPath();
-            
-            
-            if(OSValidator.isWindows()) {
-            	 dir = fs.getPath("C:", "audiocast", path);	
-            	
-            }else if(OSValidator.isUnix()){
-            	dir = fs.getPath("/", "opt","audiocast", path);	
-            	
-            }
-            
-            System.out.println("SHOW ON ITEM CONTROLLER :"+dir+getSlashByOS()+fileDocument.get().getFileName());
-            
-            MultipartFileSender.fromURIString(dir+getSlashByOS()+fileDocument.get().getFileName())
-                    .with(request)
-                    .with(response)
-                .serveResource();
+     //  if (show.isDownloaded()) {
+          logger.debug("R�cup�ration en local de l'item {} au chemin {}", name, fileDocument.getUri());
+           
+           
+           
+           // Creating the directory to store file
+           FileSystem fs = FileSystems.getDefault();
+           
+           //ApplicationContextAware contextProvider = new ApplicationContextProvider();
+           Path dir = null;
+           
+           path = fileService.createPath();
+           
+           
+           if(OSValidator.isWindows()) {
+           	 dir = fs.getPath("C:", "audiocast", path);	
+           	
+           }else if(OSValidator.isUnix()){
+           	dir = fs.getPath("/", "opt","audiocast", path);	
+           	
+           }
+           
+           System.out.println("SHOW ON ITEM CONTROLLER :"+dir+getSlashByOS()+fileDocument.getFileName());
+           
+           MultipartFileSender.fromURIString(dir+getSlashByOS()+fileDocument.getFileName())
+                   .with(request)
+                   .with(response)
+               .serveResource();
 
-       // } else {
-         //   response.sendRedirect(show.getUrl());
-       // }
-    }
-    
-   private String getSlashByOS() {
-    	
-    	return (OSValidator.isWindows()?"\\":"/");
-    }
+      // } else {
+        //   response.sendRedirect(show.getUrl());
+      // }
+   }
    
+  private String getSlashByOS() {
+   	
+   	return (OSValidator.isWindows()?"\\":"/");
+   }
     
 }

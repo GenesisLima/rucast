@@ -14,9 +14,6 @@ angular.module('rucast').controller('ProductController', function($scope, $route
 			
 			
 		})	
- 	
-
- 	
 }
 	
 	var entries = resourceProduct.query(function(){ 
@@ -28,9 +25,7 @@ angular.module('rucast').controller('ProductController', function($scope, $route
 		 })
 		 
 		  if($routeParams.id){			
-			 $scope.product =  resourceProduct.get({id: $routeParams.id}, function(success,error){
-				 console.log("PRODUCT "+$scope.product.name);
-				  console.log("SUCCESS "+success);
+			 $scope.product =  resourceProduct.get({id: $routeParams.id}, function(success,error){				
 				  console.log("ERROR "+error);
 			  });
 		     }

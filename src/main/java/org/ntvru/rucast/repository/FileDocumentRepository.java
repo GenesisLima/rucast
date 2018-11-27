@@ -11,4 +11,6 @@ import org.springframework.data.repository.query.Param;
 @Transactional
 public interface FileDocumentRepository extends CrudRepository<FileDocument, Long> {
 
+	FileDocument findByFileName(String name);
+
 }

@@ -119,8 +119,16 @@
     <version>2.0.0-alpha.22</version>
 </dependency>
 
-<!-- https://mvnrepository.com/artifact/org.webjars/jquery -->
+<!-- H2 Database -->
+ <dependency>
+ <groupId>com.h2database</groupId>
+ <artifactId>h2</artifactId>
+ </dependency>
 
+<dependency>
+  <groupId>com.fasterxml.jackson.dataformat</groupId>
+  <artifactId>jackson-dataformat-xml</artifactId>
+</dependency>
 	</dependencies>
 	<build>
 		<plugins>		

@@ -2,6 +2,8 @@ package org.ntvru.rucast.controller;
 
 import java.util.List;
 
+import javax.ws.rs.Produces;
+
 import org.ntvru.rucast.model.Category;
 import org.ntvru.rucast.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,7 @@ public class CategoryController {
 	}
 	
 	@RequestMapping(method=RequestMethod.GET)
+	@Produces("application/json")
 	public @ResponseBody List<Category> getAllCategories(ModelAndView modelAndView) {		  
           
 		List<Category> categories = service.findAll(); 
@@ -53,6 +56,7 @@ public class CategoryController {
 	}
 	
 	@RequestMapping(value="/api/categories", method=RequestMethod.GET)
+	@Produces("application/json")
 	public @ResponseBody List<Category> listCategories(){	
 		System.out.println("REQUEST "+this.toString()+" AJAX ");
 		System.out.println(service.findAll());
@@ -66,6 +70,7 @@ public class CategoryController {
 	
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	@Produces("application/json")
 	public @ResponseBody Category getCategory(ModelAndView modelAndView, @PathVariable Long id){	
 		//modelAndView.addObject("category", service.findById(id).get());
 		//modelAndView.setViewName("/public/category.html");
