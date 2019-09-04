@@ -58,18 +58,12 @@ public class FeedofShowController {
 	
 	@RequestMapping(value="/rssfeed.*", method=RequestMethod.GET)
 	@Produces("application/rss+xml")
-	public @ResponseBody ModelAndView getFeedRss() throws Exception{		  
-		
+	public @ResponseBody ModelAndView getFeedRss() throws Exception{		  		
 		
 		List<Episode> items = episodeService.findAll();	
-		
+		System.out.println("ITEMS "+items);
 		ModelAndView modelAndView = new ModelAndView(new AudiocastRSSViewer(), "feedEpisodes",items);
-	    
-//		View resolvedView = view.resolveViewName("rssfeed", Locale.getDefault());
-//		MockHttpServletResponse mockResp = new MockHttpServletResponse();
-//		resolvedView.render(modelAndView.getModel(), request, mockResp);
-//		System.out.println("rendered html : " + mockResp.getContentAsString());
-		//System.out.println("RSS VIEW "+modelAndView.getModel().());
+
 		
 		return modelAndView;
 	}

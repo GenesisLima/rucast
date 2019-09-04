@@ -4,16 +4,27 @@ package org.ntvru.rucast.controller;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.UnknownHostException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
-import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.apache.tika.Tika;
+import org.apache.tika.exception.TikaException;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.parser.AutoDetectParser;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.parser.Parser;
+import org.apache.tika.sax.BodyContentHandler;
 import org.ntvru.rucast.model.Episode;
 import org.ntvru.rucast.model.FileDocument;
 import org.ntvru.rucast.service.CategoryService;
@@ -29,10 +40,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.google.gson.Gson;
+import org.xml.sax.SAXException;
 
 
 
@@ -68,7 +77,8 @@ public class FileUploadController {
     private String type;
     private String size;
     public static final String ROOT = "upload-dir";
-    
+    Tika tika = new Tika();
+	
    
 
     @RequestMapping(value = "/file", method = RequestMethod.POST)
@@ -93,7 +103,7 @@ public class FileUploadController {
         
         
         String newFileMessage = "O upload do arquivo " + name + " foi realizado com sucesso!"; 
-        String alreadyExistsMessage =  "O arquivo " + name + " j� foi salvo anteriormente!"; 
+        String alreadyExistsMessage =  "O arquivo " + name + " já foi salvo anteriormente!"; 
       
         String uri = "http://"+request.getLocalAddr()+":"+request.getLocalPort()+request.getContextPath()+"/downloads/files/";
         
@@ -120,7 +130,7 @@ public class FileUploadController {
             
           
                 
-            File f = new File(dir.toString());
+            File directory = new File(dir.toString());
 
             
 
@@ -129,17 +139,16 @@ public class FileUploadController {
            // File serverFile = new File(dir.getAbsolutePath() + "\\" + name);
             //Linux
         
-            if (!f.exists()) {
-                f.mkdirs();
+            if (!directory.exists()) {
+            	directory.mkdirs();
             }
-             File serverFile = new File(f.getAbsolutePath()+getSlashByOS()+name);
-            if (!serverFile.exists()) {
-                 System.out.println("SERVER FILE "+serverFile);
-                
-                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+             File audioFile = new File(directory.getAbsolutePath()+getSlashByOS()+name);
+            if (!audioFile.exists()) {
+            	
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(audioFile));
 
                 stream.write(bytes);
-                
+
                 
                 //System.out.println("EPISODE"+episode);
 
@@ -150,8 +159,15 @@ public class FileUploadController {
                 //System.out.println("EPISODE SHOW "+episode.getShow() );
                 for(int i=0; i < categories.length;i++) {
                episode.getShow().getCategories().add(categoryService.findCategoryByName(categories[i]).get());
-                System.out.println("CATEGORY BY NAME "+categoryService.findCategoryByName(categories[i]).get());   
+//                System.out.println("CATEGORY BY NAME "+categoryService.findCategoryByName(categories[i]).get());   
                 }
+                
+                Map<String,String> audioMetaData = extractMetadata(audioFile);
+                String value = audioMetaData.get("xmpDM:duration");
+               // System.out.println("TIME "+TimeUnit.MILLISECONDS.toSeconds(Long.valueOf(value)));
+                episode.setDuration(value);
+//                System.out.println("DURATION "+value);
+//                System.out.println("DURATION II - The Mission"+audioMetaData.keySet());
                 episodeService.save(episode);
                 
                 fileDocument.setEpisode(episode);             
@@ -159,12 +175,14 @@ public class FileUploadController {
                 fileDocument.setFilePath(path);
                 fileDocument.setFileName(name);
                 fileDocument.setFileSize(size);
-                fileDocument.setFileType(type);
+                fileDocument.setFileType(type);                
                 fileDocument.setUri(uri);   
                 fileDocument.setEpisode(episode);
                 
                 fileService.save(fileDocument);
-               
+                System.out.println("TIKA "+tika.detect(bytes));
+                System.out.println("TIKA PARSE "+extractMetadata(audioFile));
+
                 System.out.println("FILE DOCUMENT "+fileDocument);
 
              
@@ -199,7 +217,7 @@ public class FileUploadController {
     }
 
     
-    private String getSlashByOS() {
+  private String getSlashByOS() {
     	
     	return (OSValidator.isWindows()?"\\":"/");
     }
@@ -270,4 +288,26 @@ public class FileUploadController {
         	 }
     	
     }
+    
+    private Map<String,String> extractMetadata(File file) throws IOException, SAXException, TikaException {
+    	Parser parser = new AutoDetectParser();
+        BodyContentHandler handler = new BodyContentHandler();
+        Metadata metadata = new Metadata();
+        FileInputStream inputstream = new FileInputStream(file);
+        ParseContext context = new ParseContext();
+        
+        parser.parse(inputstream, handler, metadata, context);
+        System.out.println(handler.toString());
+
+        
+        String[] metadataNames = metadata.names();
+        Map<String,String> audioFileMetaData = new HashMap<String,String>();
+        for(String name : metadataNames) {
+        	audioFileMetaData.put(name, metadata.get(name));
+           System.out.println(name + ": " + metadata.get(name));
+        }
+		return audioFileMetaData;
+    }
+    
+    
 }

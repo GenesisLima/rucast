@@ -3,12 +3,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.assertj.core.util.Arrays;
 import org.ntvru.rucast.model.Episode;
 import org.ntvru.rucast.utils.SyndicationLink;
@@ -21,7 +21,6 @@ import com.rometools.modules.itunes.FeedInformation;
 import com.rometools.modules.itunes.FeedInformationImpl;
 import com.rometools.modules.itunes.types.Category;
 import com.rometools.modules.itunes.types.Duration;
-import com.rometools.modules.itunes.types.Subcategory;
 import com.rometools.rome.feed.atom.Link;
 import com.rometools.rome.feed.module.Module;
 import com.rometools.rome.feed.rss.Channel;
@@ -41,14 +40,12 @@ public class AudiocastRSSViewer extends AbstractRssFeedView {
 	 List<Module> modules = new ArrayList<Module>();
 	 EntryInformation entryInfo = new EntryInformationImpl();
 	 List<Category> categories = new ArrayList<Category>();
-//	 Category educationCategory = new Category("Education");		 
-//	 Category politicsCategory = new Category("Politics");
+
 	 List<Item> items = new ArrayList<Item>();
 	 
 	 
 	 public AudiocastRSSViewer() {
-		 categories.add(new Category("Education"));
-		// feedInfo.setCategories(categories);
+//		 categories.add(new Category("Education"));
 		
 	}
 	 
@@ -57,25 +54,18 @@ public class AudiocastRSSViewer extends AbstractRssFeedView {
 	@Override
 	protected List<Item> buildFeedItems(Map<String, Object> model,
 		 HttpServletRequest arg1, HttpServletResponse arg2) throws Exception {
-		 @SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked")
 		List<Episode> listEps = (List<Episode>) model.get("feedEpisodes");
-		 
 	
-		 
-		
 		 for(Episode episode:listEps){
 		 
 			 Item item = new Item();
-			// syndEntry = new SyndEntryImpl();
-			// syndDescription = new SyndContentImpl();
+			
 			 Content content = new Content();
-//           
-//		     
-//		    
-//			 
+			 
 			 content.setValue(episode.getSynopsis());
-//			 
-			 item.setAuthor(episode.getTopic());
+	 
+			 item.setAuthor(episode.getShow().getName());
 			 item.setContent(content);			
 			 item.setTitle(episode.getTopic());			
 			 item.setLink(episode.getFileDocument().getUri()+episode.getFileDocument().getFileName());
@@ -88,60 +78,33 @@ public class AudiocastRSSViewer extends AbstractRssFeedView {
 			 description.setValue(episode.getSynopsis());
              item.setDescription(description);
              item.setPubDate(new Date());
-           
-             entryInfo.setDuration(new Duration(4182295));
-           //  System.out.println(episode.getShow().getCategories().toArray(new String[episode.getShow().getCategories().size()]));
-    		 entryInfo.setKeywords(new String[] {"Educação"});
-             //entryInfo.setKeywords();    		 
-    		 entryInfo.setSummary(episode.getSynopsis());
-    		 entryInfo.setSubtitle(episode.getSynopsis());
-    		 entryInfo.setAuthor("NTVRU-UFPE");
+             if(episode.getDuration()!=null) {
+             String milliseconds = String.valueOf(TimeUnit.MILLISECONDS.toMinutes((long)Double.parseDouble(episode.getDuration())));             
+             entryInfo.setDuration(new Duration(milliseconds));
+             }
+             List<org.ntvru.rucast.model.Category> catgrs = episode.getShow().getCategories();
+             String[] categoryNames = new String[catgrs.size()];             
+             for(int i=0; i<catgrs.size()-1; i++) {
+            	 categoryNames[i] = catgrs.get(i).getName();
+             }
+             entryInfo.setKeywords(categoryNames);
+    		 entryInfo.setSummary(description.getValue());
+    		 entryInfo.setSubtitle(description.getValue());
+    		 entryInfo.setAuthor(episode.getShow().getName());
     		 entryInfo.setExplicit(false);
     		 entryInfo.setBlock(false);
     		 
     		 Enclosure enclosure = new Enclosure();
-//           
-            //enclosure.setUrl(episode.getFileDocument().getUri()+episode.getId());
-    		 enclosure.setUrl(episode.getFileDocument().getUri()+episode.getFileDocument().getFileName());
+         
+    		enclosure.setUrl(episode.getFileDocument().getUri()+episode.getFileDocument().getFileName());
             enclosure.setType(episode.getFileDocument().getFileType());
-//            
-            enclosure.setLength(4182295);
-            item.getEnclosures().add(enclosure);
-//             e.setSubtitle(show.getTopic());
-//             e.setDuration(new Duration(4182295));
-//             e.setAuthor("NTVRU-UFPE");
-//             e.setImage(new URL("http://estudante.ufpe.br/wp-content/themes/portaldoestudante/images/logo_UFPE.png"));
-//             e.setSummary(show.getSynopsis());
-//           
-//             e.setKeywords(new String[]{"Educacao","Politico"});
-            
-             //FeedInfo was here
-             
-            
            
-//             feedInfo.setImage(new URL("http://estudante.ufpe.br/wp-content/themes/portaldoestudante/images/logo_UFPE.png"));
-//             
-//           
-//             
-//             feedInfo.setSummary(episode.getSynopsis());
-//             feedInfo.setSubtitle("Subtitulo");
-//             feedInfo.setCategories(categories);
-//            feedInfo.setKeywords(new String[]{"Educacao"});
-//           feedInfo.setAuthor("Nucleo de TV e Radio Universitaria");
-//             
-//             syndEntry.setTitle(show.getTopic());
-//             syndEntry.setLink(show.getUrl());
-             
-			
-             
-//             
+            enclosure.setLength((long)Double.parseDouble(episode.getFileDocument().getFileSize()));
+            item.getEnclosures().add(enclosure);
+             List<Category> categories = new ArrayList<>();          
              
              item.setModules(modules);
-             
-//            
-          // syndDescription.setType(show.getFileDocument().getFileType());
-           //  syndDescription.setValue(show.getSynopsis());
-           //  syndEntry.setDescription(syndDescription);
+
              
            
 			items.add(item);
@@ -162,11 +125,14 @@ public class AudiocastRSSViewer extends AbstractRssFeedView {
 	protected void buildFeedMetadata(Map<String, Object> model, Channel feed,
 			HttpServletRequest request) {
 		final List<Episode> listEpisodes = (List<Episode>) model.get("feedEpisodes");
-
-		 FeedInformation feedInfo = new FeedInformationImpl( );
-
-		feed.setTitle("NTVRU-RSS");
-		feed.setDescription("Este feed distribui os produtos de �udio do N�cleo de TV e R�dio Universit�ria da UFPE");
+		
+		 FeedInformation feedInfo = new FeedInformationImpl();
+         if(listEpisodes.size()>0) { 
+        	 Episode episode = listEpisodes.get(0);
+		 feed.setTitle(episode.getShow().getName());
+         
+		
+		feed.setDescription("Este feed distribui os produtos de Rádio do Núcleo de TV e Rádio Universitária da UFPE");
 		feed.setLink("http://estudante.ufpe.br/wp-content/themes/portaldoestudante/images/logo_UFPE.png");
 		feed.setWebMaster("genesis.lima@ufpe.br (Genesis Lima)");
 		
@@ -174,7 +140,7 @@ public class AudiocastRSSViewer extends AbstractRssFeedView {
 		feed.setLanguage("pt-br");
 		//feed.setModules(modules);
 		Image ufpeImage = new Image();
-		ufpeImage.setTitle("NTVRU-RSS");
+		ufpeImage.setTitle(episode.getShow().getName());
 		ufpeImage.setWidth(50);
 		ufpeImage.setHeight(50);
 		ufpeImage.setLink("https://www.ufpe.br/image/company_logo?img_id=20911&t=1542634550061");
@@ -182,9 +148,9 @@ public class AudiocastRSSViewer extends AbstractRssFeedView {
 		feed.setImage(ufpeImage);
 //		  feedInfo.setCategories(categories);
 //		  feedInfo.setKeywords(new String[]{"Educação","Político"});
-		  feedInfo.setOwnerName("NTVRU-UFPE");
+		  feedInfo.setOwnerName("Rádio Universitária (99.9) - UFPE");
           feedInfo.setOwnerEmailAddress("genesis.lima@ufpe.br (Genesis Lima)");
-          feedInfo.setAuthor("Nucleo de TV e Rádio Universitária");
+          feedInfo.setAuthor("Rádio Universitária");
           List<Category> categories = new ArrayList<>();
           Category education = new Category();
           education.setName("Education");         
@@ -198,7 +164,7 @@ public class AudiocastRSSViewer extends AbstractRssFeedView {
 //          categories.add(news);
           
           
-          
+         }
 
           feedInfo.setCategories(categories);
           feedInfo.setSummary("Este feed distribui os produtos de áudio do Núcleo de TV e Rádio Universitária da UFPE");
@@ -206,35 +172,17 @@ public class AudiocastRSSViewer extends AbstractRssFeedView {
          
           //begin atom
           final List<Link> atomLinks = new ArrayList<>();
-         // atomLinks.add(new SyndicationLink().withRel("self").withType(super.getContentType()).withHref("http://150.161.93.92:8081/audiocast/rssfeed").getLink());
           atomLinks.add(new SyndicationLink().withRel("self").withType(super.getContentType()).withHref("http://150.161.93.62/rssfeed.xml").getLink());
 
-//          if (posts.hasPrevious()) {
-//              atomLinks.add(new SyndicationLink()
-//                      .withRel("previous")
-//                      .withType(super.getContentType())
-//                      .withHref(String.format(hrefFormat, self, posts.previousPageable().getPageNumber()))
-//                      .getLink()
-//              );
-//          }
-//          if (posts.hasNext()) {
-//              atomLinks.add(new SyndicationLink()
-//                      .withRel("next")
-//                      .withType(super.getContentType())
-//                      .withHref(String.format(hrefFormat, self, posts.nextPageable().getPageNumber()))
-//                      .getLink()
-//              );
-//          }
+
           feed.getModules().addAll(atomLinks.stream().map(l -> {
               final AtomLinkModuleImpl rv = new AtomLinkModuleImpl();
               rv.setLink(l);
               return rv;
           }).collect(Collectors.toList()));
           
-//      
           //end atom
     
-         // modules.add(feedInfo);
         
     
 	

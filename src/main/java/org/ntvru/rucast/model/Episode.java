@@ -1,6 +1,7 @@
 package org.ntvru.rucast.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
@@ -47,6 +48,7 @@ public class Episode implements Serializable {
 	private String topic;
 	private String synopsis;	
 	private LocalDate saveDate = LocalDate.now();
+	private String duration;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_episode_show")

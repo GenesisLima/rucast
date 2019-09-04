@@ -32,9 +32,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 		.authorizeRequests()	
-		.antMatchers("/rssfeed.xml","/webjars/**", "/registration","/downloads/files/**").permitAll()		
+		.antMatchers("/rssfeed.xml","/webjars/**", "/registration","/downloads/files/**","/h2/**").permitAll()		
 		.antMatchers("/").hasAnyRole("EDITOR")
-		.antMatchers("/index","/upload/**", "/h2/**").hasAnyRole("ADMIN")
+		.antMatchers("/index","/upload/**").hasAnyRole("ADMIN")
 		.anyRequest()
 		.authenticated()
 		.and()
@@ -49,18 +49,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.and()
 		.csrf()
 		.disable();
+		http.headers().frameOptions().disable();
 	}
 	
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder builder) throws Exception {
 		builder
 		.inMemoryAuthentication()
-		.withUser("genesis").password("$2a$10$7CbNjdc1SIrrHKDO5VywVu69xUK3gYZvvOTpmOUhlAGe9IUxbJZs2").roles("EDITOR","ADMIN")
+		.withUser("genesis").password("$2a$10$CIpgAcSsCmtE2X1p5.BKtOhCxV2uAuPglHDWVZ3uV8SHYLYoPCol2").roles("EDITOR","ADMIN")                                                                    
 		.and()
 		.withUser("lima").password("$2a$10$l4UtQTONoBqh2RErK0y6HOxeBzIj/5qghixv1x1me7jsJnoVoR57O").roles("EDITOR")
 		.and()
 		.withUser("admin").password("admin").roles("ADMIN");
-		builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+		//builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 		
 	}
 	
