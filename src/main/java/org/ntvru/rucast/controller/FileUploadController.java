@@ -155,7 +155,7 @@ public class FileUploadController {
                 
                
                              
-                episode.setShow(showService.findShowByName(showName).get());
+              //  episode.setShow(showService.findShowByName(showName).get());
                 //System.out.println("EPISODE SHOW "+episode.getShow() );
                 for(int i=0; i < categories.length;i++) {
                episode.getShow().getCategories().add(categoryService.findCategoryByName(categories[i]).get());
@@ -164,8 +164,9 @@ public class FileUploadController {
                 
                 Map<String,String> audioMetaData = extractMetadata(audioFile);
                 String value = audioMetaData.get("xmpDM:duration");
+                System.out.println("VALUE "+value);
                // System.out.println("TIME "+TimeUnit.MILLISECONDS.toSeconds(Long.valueOf(value)));
-                episode.setDuration(value);
+                //episode.setDuration(value);
 //                System.out.println("DURATION "+value);
 //                System.out.println("DURATION II - The Mission"+audioMetaData.keySet());
                 episodeService.save(episode);

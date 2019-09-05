@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.assertj.core.util.Arrays;
 import org.ntvru.rucast.model.Episode;
 import org.ntvru.rucast.utils.SyndicationLink;
 import org.springframework.web.servlet.view.feed.AbstractRssFeedView;
@@ -128,7 +127,7 @@ public class AudiocastRSSViewer extends AbstractRssFeedView {
 		
 		 FeedInformation feedInfo = new FeedInformationImpl();
          if(listEpisodes.size()>0) { 
-        	 Episode episode = listEpisodes.get(0);
+         Episode episode = listEpisodes.get(0);
 		 feed.setTitle(episode.getShow().getName());
          
 		
@@ -167,12 +166,12 @@ public class AudiocastRSSViewer extends AbstractRssFeedView {
          }
 
           feedInfo.setCategories(categories);
-          feedInfo.setSummary("Este feed distribui os produtos de áudio do Núcleo de TV e Rádio Universitária da UFPE");
+          feedInfo.setSummary("Este feed distribui os produtos de áudio do Núcleo de TV e Rádio Universitária da UFPE.");
           feed.getModules().add(feedInfo);
          
           //begin atom
           final List<Link> atomLinks = new ArrayList<>();
-          atomLinks.add(new SyndicationLink().withRel("self").withType(super.getContentType()).withHref("http://150.161.93.62/rssfeed.xml").getLink());
+          atomLinks.add(new SyndicationLink().withRel("self").withType(super.getContentType()).withHref("http://150.161.93.221/rssfeed.xml").getLink());
 
 
           feed.getModules().addAll(atomLinks.stream().map(l -> {
