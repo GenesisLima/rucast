@@ -166,7 +166,7 @@ public class FileUploadController {
                 String value = audioMetaData.get("xmpDM:duration");
                 System.out.println("VALUE "+value);
                // System.out.println("TIME "+TimeUnit.MILLISECONDS.toSeconds(Long.valueOf(value)));
-                //episode.setDuration(value);
+                episode.setDuration(value);
 //                System.out.println("DURATION "+value);
 //                System.out.println("DURATION II - The Mission"+audioMetaData.keySet());
                 episodeService.save(episode);
@@ -181,26 +181,18 @@ public class FileUploadController {
                 fileDocument.setEpisode(episode);
                 
                 fileService.save(fileDocument);
-                System.out.println("TIKA "+tika.detect(bytes));
-                System.out.println("TIKA PARSE "+extractMetadata(audioFile));
-
-                System.out.println("FILE DOCUMENT "+fileDocument);
+//                System.out.println("TIKA "+tika.detect(bytes));
+//                System.out.println("TIKA PARSE "+extractMetadata(audioFile));
+//
+//                System.out.println("FILE DOCUMENT "+fileDocument);
 
              
 
-              
-               
                 System.out.println(newFileMessage);
                                         
-                
-              
-               
-               
+     
                 System.out.println("EPISODE "+episode);
-               
-
-                
-                       
+          
                 stream.close();
                 redirectAttributes.addFlashAttribute("message", newFileMessage);
             } else {

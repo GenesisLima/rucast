@@ -46,6 +46,7 @@ public class Episode implements Serializable {
 	private Long id;
 	
 	private String topic;
+	@Column(columnDefinition="text")
 	private String synopsis;	
 	private LocalDate saveDate = LocalDate.now();
 	private String duration;
