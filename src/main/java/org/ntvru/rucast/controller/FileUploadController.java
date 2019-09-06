@@ -85,17 +85,7 @@ public class FileUploadController {
   //  @RequestMapping(value = "/episode", method = RequestMethod.POST)
     @Secured(value={"ADMIN"})
     public String uploadFileHandler(@RequestParam("file") MultipartFile file, @RequestParam("showName") String showName, @RequestParam("categories") String[] categories, ModelMap model, RedirectAttributes redirectAttributes, FileDocument fileDocument, Episode episode) throws UnknownHostException {
-    	
-    	   System.out.println("Show Name "+showName);
-   System.out.println("Show "+episode.toString()+"Tema: "+episode.getTopic());
-   System.out.println("Show "+episode.toString()+"Sinopse: "+episode.getSynopsis());
-   System.out.println("Show "+episode.toString()+"Data: "+episode.getSaveDate());
 
-  // ModelAndView modelAndView = new ModelAndView("redirect:/");
-   
-    
-   
-   
         path = "";
         name = file.getOriginalFilename();
         type = file.getContentType();
@@ -150,23 +140,22 @@ public class FileUploadController {
                 stream.write(bytes);
 
                 
-                //System.out.println("EPISODE"+episode);
+                System.out.println("EPISODE SHOW"+episode.getShow());
 
-                
+                episode.setShow(showService.findShowByName(showName).get());
                
                              
-              //  episode.setShow(showService.findShowByName(showName).get());
-                //System.out.println("EPISODE SHOW "+episode.getShow() );
+           
                 for(int i=0; i < categories.length;i++) {
                episode.getShow().getCategories().add(categoryService.findCategoryByName(categories[i]).get());
-//                System.out.println("CATEGORY BY NAME "+categoryService.findCategoryByName(categories[i]).get());   
-                }
+               System.out.println("CATEGORY "+categoryService.findCategoryByName(categories[i]).get());
+           }
                 
-                Map<String,String> audioMetaData = extractMetadata(audioFile);
-                String value = audioMetaData.get("xmpDM:duration");
-                System.out.println("VALUE "+value);
+               // Map<String,String> audioMetaData = extractMetadata(audioFile);
+             //   String value = audioMetaData.get("xmpDM:duration");
+//                System.out.println("VALUE "+value);
                // System.out.println("TIME "+TimeUnit.MILLISECONDS.toSeconds(Long.valueOf(value)));
-                episode.setDuration(value);
+              //  episode.setDuration(value);
 //                System.out.println("DURATION "+value);
 //                System.out.println("DURATION II - The Mission"+audioMetaData.keySet());
                 episodeService.save(episode);
@@ -181,10 +170,7 @@ public class FileUploadController {
                 fileDocument.setEpisode(episode);
                 
                 fileService.save(fileDocument);
-//                System.out.println("TIKA "+tika.detect(bytes));
-//                System.out.println("TIKA PARSE "+extractMetadata(audioFile));
-//
-//                System.out.println("FILE DOCUMENT "+fileDocument);
+
 
              
 
