@@ -135,8 +135,8 @@ public class FileUploadController {
              File audioFile = new File(directory.getAbsolutePath()+getSlashByOS()+name);
             if (!audioFile.exists()) {
             	
-                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(audioFile));
-
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(renameFile(audioFile)));
+                
                 stream.write(bytes);
 
                 
@@ -151,9 +151,9 @@ public class FileUploadController {
                System.out.println("CATEGORY "+categoryService.findCategoryByName(categories[i]).get());
            }
                 
-               // Map<String,String> audioMetaData = extractMetadata(audioFile);
-             //   String value = audioMetaData.get("xmpDM:duration");
-//                System.out.println("VALUE "+value);
+                Map<String,String> audioMetaData = extractMetadata(audioFile);
+                String value = audioMetaData.get("xmpDM:duration");
+                System.out.println("VALUE "+value);
                // System.out.println("TIME "+TimeUnit.MILLISECONDS.toSeconds(Long.valueOf(value)));
               //  episode.setDuration(value);
 //                System.out.println("DURATION "+value);
@@ -195,6 +195,27 @@ public class FileUploadController {
         return "redirect:/";
     }
 
+    
+   private File renameFile(File audioFile) {
+	   
+	   File oldfile = audioFile;
+	   String newFileName ="";
+	   
+	   if(audioFile.getName().contains(" ")) {
+		 newFileName = audioFile.getName().replaceAll(" ", "-");
+	   }
+             	   
+	   File newFile = new File(newFileName);	   
+
+		
+		if(oldfile.renameTo(newFile)){
+			System.out.println("Rename succesful");
+		}else{
+			System.out.println("Rename failed");
+		}
+   	
+   return oldfile;
+   }
     
   private String getSlashByOS() {
     	

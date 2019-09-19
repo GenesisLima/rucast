@@ -40,7 +40,7 @@ public class FeedofShowController {
 	private EpisodeService episodeService;
 	
 	//TODO Do Refactorings with Optional API
-	@RequestMapping(value="/rssfeed/{showName}", method=RequestMethod.GET)
+	@RequestMapping(value="/rssfeed/{showName}", method= RequestMethod.GET)
 	public ModelAndView getFeedRssByName(Episode episode, @PathVariable("showName") String showName) throws UnknownHostException{
 		ModelAndView modelAndView=  null;
 	    Optional<Show> theShow = showService.findShowByName(showName);

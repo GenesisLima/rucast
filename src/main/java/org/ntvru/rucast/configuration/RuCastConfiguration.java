@@ -1,6 +1,9 @@
 package org.ntvru.rucast.configuration;
 
+import javax.servlet.Filter;
+
 import org.ntvru.rucast.rss.AudiocastRSSViewer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
@@ -22,6 +25,12 @@ public class RuCastConfiguration extends WebMvcConfigurerAdapter {
 	     @Override
 	    public void configureViewResolvers(ViewResolverRegistry registry) {
 	        registry.enableContentNegotiation(new AudiocastRSSViewer());
+	    }
+	    
+	    @Bean
+	    public Filter httpHeadFilter() {
+	    	 HttpHeadFilter   httpHeadFilter  = new  HttpHeadFilter ();
+	        return httpHeadFilter;
 	    }
 	
 }

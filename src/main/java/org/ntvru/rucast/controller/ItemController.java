@@ -86,7 +86,7 @@ protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 //
 //    }
   
-   @RequestMapping(value="/files/{name}", method = RequestMethod.GET)
+   @RequestMapping(value="/files/{name}", method = {RequestMethod.GET})
    public void getEpisodeByFileName(@PathVariable String name, HttpServletRequest request, HttpServletResponse response) throws Exception {
        logger.debug("Download of item file {}", name);
       FileDocument fileDocument= fileService.findByName(name);
